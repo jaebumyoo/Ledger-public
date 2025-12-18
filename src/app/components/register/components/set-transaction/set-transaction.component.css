@@ -1,0 +1,50 @@
+.st-dialog {
+    margin: 30px;
+}
+
+.st-form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.st-form-row {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.st-type-wrapper {
+    margin-lefT: 10px;
+    margin-bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.st-button-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.spinner-wrapper {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}

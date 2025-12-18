@@ -1,0 +1,94 @@
+.register-page {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.register-cs {
+    width: 700px;
+
+    margin: 50px;
+}
+
+
+.register-cs-title-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 10px;
+}
+
+.register-cs-button-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.register-cs-button-wrapper>button {
+    margin: 2px;
+}
+
+:host ::ng-deep .cal-cell-selected {
+    border: 2px solid #6fa8dc;
+    border-radius: 2px;
+}
+
+.register-cs-cell {
+    cursor: pointer;
+}
+
+.register-cs-cell-date {
+    width: 100%;
+    height: 45%;
+}
+
+.register-cs-cell-wrapper {
+    width: 100%;
+    height: 55%;
+
+    display: flex;
+    justify-content: end;
+}
+
+.register-cs-cell {
+    color: rgb(26, 27, 31) !important;
+    font-size: 1em !important;
+}
+
+.register-rs {
+    width: 450px;
+
+    margin: 50px;
+}
+
+.register-rs-title-wrapper {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.register-rs-title {
+    margin-right: 10px;
+}
+
+.register-rs-empty {
+    display: flex;
+    justify-content: center;
+
+    color: #A0A0A0;
+    font-size: 16px;
+
+    margin: 15px;
+}
+
+.register-rs-col-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.register-rs-col {
+    margin-right: 5px;
+}

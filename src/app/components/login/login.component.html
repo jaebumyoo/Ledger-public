@@ -1,0 +1,30 @@
+<div class="login-page">
+    <img class="login-logo" src="images/ledger.png" alt="logo" />
+
+    <div>
+        @if (errorMessage() !== '') {
+        <p class="login-error">{{ 'ERROR: ' + errorMessage() }}</p>
+        }
+    </div>
+
+
+    <form class="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="login-fields">
+            <mat-form-field>
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password" required>
+            </mat-form-field>
+        </div>
+
+        @if (isLoading()) {
+        <mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+        } @else {
+        <button mat-flat-button type="submit" [disabled]="loginForm.invalid">Login</button>
+        }
+    </form>
+</div>

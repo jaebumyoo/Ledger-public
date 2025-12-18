@@ -1,0 +1,140 @@
+<div class="reports-page">
+    <mat-accordion class="report-ps">
+        <mat-expansion-panel (opened)="isPanelOpened.set(true)" (closed)="isPanelOpened.set(false)">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Date Range Report </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <form class="report-ps-dp-wrapper" [formGroup]="range">
+                <mat-form-field class="report-ps-dp">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="dp_start" formControlName="start">
+                    <mat-datepicker-toggle matIconSuffix [for]="dp_start"></mat-datepicker-toggle>
+                    <mat-datepicker #dp_start></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="report-ps-dp">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="dp_end" formControlName="end">
+                    <mat-datepicker-toggle matIconSuffix [for]="dp_end"></mat-datepicker-toggle>
+                    <mat-datepicker #dp_end></mat-datepicker>
+                </mat-form-field>
+            </form>
+
+            <div class="report-ps-button-wrapper">
+                <mat-error>
+                    @if (range.hasError('rangeInvalid') && range.touched) {
+                    Date Range Is Invalid
+                    }
+                </mat-error>
+
+                <button matButton="outlined" class="report-ps-button" [disabled]="range.invalid"
+                    (click)="onGenerate(REPORT_TYPE.RANGE)">
+                    Generate
+                </button>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="true" (opened)="isPanelOpened.set(true)" (closed)="isPanelOpened.set(false)">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Monthly Report </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="report-ps-dp-wrapper">
+                <ldgr-p-monthly-picker [monthly]="monthly"></ldgr-p-monthly-picker>
+
+                <button matButton="outlined" class="report-ps-button" [disabled]="monthly.invalid"
+                    (click)="onGenerate(REPORT_TYPE.MONTHLY)">
+                    Generate
+                </button>
+            </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="isPanelOpened.set(true)" (closed)="isPanelOpened.set(false)">
+            <mat-expansion-panel-header>
+                <mat-panel-title> Yearly Report </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="report-ps-dp-wrapper">
+                <ldgr-p-yearly-picker [yearly]="yearly"></ldgr-p-yearly-picker>
+
+                <button matButton="outlined" class="report-ps-button" [disabled]="yearly.invalid"
+                    (click)="onGenerate(REPORT_TYPE.YEARLY)">
+                    Generate
+                </button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+
+    <div class="report-cs">
+        @for (report of reports(); track report.title) {
+        <mat-card appearance="outlined">
+            <mat-card-header class="report-cs-title-wrapper">
+                <mat-card-title>{{ report.title }}</mat-card-title>
+
+                <button matIconButton (click)="deleteReport(report)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div class="report-cs-tables-wrapper">
+                    <div>
+                        <p class="report-cs-tables-title">Expense</p>
+
+                        <table mat-table [dataSource]="toRow(report.expense)">
+                            <tr mat-header-row *matHeaderRowDef="reportColumns"></tr>
+                            <tr mat-row *matRowDef="let element; columns: reportColumns;"></tr>
+
+                            <ng-container [matColumnDef]="reportColumns[0]">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="report-cs-tables-column">
+                                        <mat-icon>{{ element.category.icon }}</mat-icon>
+                                        {{ element.title }}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container [matColumnDef]="reportColumns[1]">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.category.amount | currency:'USD':'symbol':'1.2-2' }}
+                                </td>
+                            </ng-container>
+                        </table>
+                    </div>
+
+                    <div>
+                        <p class="report-cs-tables-title">Income</p>
+
+                        <table mat-table [dataSource]="toRow(report.income)">
+                            <tr mat-header-row *matHeaderRowDef="reportColumns"></tr>
+                            <tr mat-row *matRowDef="let element; columns: reportColumns;"></tr>
+
+                            <ng-container [matColumnDef]="reportColumns[0]">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="report-cs-tables-column">
+                                        <mat-icon>{{ element.category.icon }}</mat-icon>
+                                        {{ element.title }}
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container [matColumnDef]="reportColumns[1]">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.category.amount | currency:'USD':'symbol':'1.2-2'}}
+                                </td>
+                            </ng-container>
+                        </table>
+                    </div>
+                </div>
+
+                <p class="report-cs-total-amount">Total: {{ report.total | currency:'USD':'symbol':'1.2-2'}}</p>
+            </mat-card-content>
+        </mat-card>
+        }
+    </div>
+</div>

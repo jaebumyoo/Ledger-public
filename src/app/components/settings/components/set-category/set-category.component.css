@@ -1,0 +1,63 @@
+.sc-dialog {
+    margin: 30px;
+}
+
+.sc-form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sc-form-row {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sc-type-wrapper {
+    width: 56px;
+    margin-bottom: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sc-icon-wrapper {
+    width: 56px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sc-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 30px;
+}
+
+.sc-button-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.spinner-wrapper {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}

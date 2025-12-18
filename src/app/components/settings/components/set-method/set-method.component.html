@@ -1,0 +1,34 @@
+<div class="sm-dialog">
+    <h2>Method {{ name() ? '- ' + name() : '' }}</h2>
+
+    <form class="sm-form" [formGroup]="methodForm" (ngSubmit)="onSubmit()">
+        @if (isLoading()) {
+        <div class="spinner-wrapper">
+            <mat-spinner></mat-spinner>
+        </div>
+        } @else {
+        <mat-form-field style="width: 100%">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" type="text" formControlName="name" />
+        </mat-form-field>
+
+        <div class="sm-form-row">
+            <mat-form-field>
+                <mat-label>Icon</mat-label>
+                <input matInput placeholder="Icon" type="text" formControlName="icon">
+            </mat-form-field>
+
+            <div class="sm-icon-wrapper">
+                @if (methodForm.get('icon')?.value) {
+                <mat-icon class="sm-icon">{{ methodForm.get('icon')?.value }}</mat-icon>
+                }
+            </div>
+        </div>
+
+        <div class="sm-button-group">
+            <button matButton="filled" type="submit" [disabled]="methodForm.invalid">Submit</button>
+            <button matButton="tonal" type="button" (click)="onClose()">Cancel</button>
+        </div>
+        }
+    </form>
+</div>

@@ -1,0 +1,108 @@
+<div class="register-page">
+    <div class="register-cs">
+        <mat-toolbar class="register-cs-title-wrapper">
+            <span>{{ viewDate() | date: 'MMMM yyyy' }}</span>
+
+            <div class="register-cs-button-wrapper">
+                <button matIconButton (click)="prevMonth()">
+                    <mat-icon>arrow_back_ios_new</mat-icon>
+                </button>
+
+                <button matButton="outlined" (click)="today()">
+                    Today
+                </button>
+
+                <button matIconButton (click)="nextMonth()">
+                    <mat-icon>arrow_forward_ios</mat-icon>
+                </button>
+            </div>
+        </mat-toolbar>
+
+        <mwl-calendar-month-view [viewDate]="viewDate()" [cellTemplate]="customCellTemplate"
+            (dayClicked)="dayClicked($event)">
+        </mwl-calendar-month-view>
+
+        <ng-template #customCellTemplate let-day="day" let-locale="locale" let-tooltipPlacement="tooltipPlacement"
+            let-highlightDay="highlightDay" let-unhighlightDay="unhighlightDay" let-eventClicked="eventClicked">
+            <div class="register-cs-cell" [class.cal-cell-selected]="isSelected(day.date)">
+                <div class="register-cs-cell-date">
+                    <span class="cal-day-number">
+                        {{ day.date | calendarDate: 'monthViewDayNumber':locale }}
+                    </span>
+                </div>
+
+                <div class="register-cs-cell-wrapper">
+                    <small class="cal-day-number register-cs-cell">
+                        {{ getBalance(day.date) | currency:'USD':'symbol':'1.2-2' }}
+                    </small>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="register-rs">
+        <mat-toolbar class="register-rs-title-wrapper">
+            <span class="register-rs-title">{{ viewDate() | date: 'MM/dd/yyyy' }}</span>
+
+            <button matIconButton (click)="setTransaction()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </mat-toolbar>
+
+
+        @if (transactions().length === 0) {
+        <div class="register-rs-empty">
+            No transactions available
+        </div>
+        } @else {
+        <table mat-table [dataSource]="transactions()">
+            <tr mat-header-row *matHeaderRowDef="registerColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: registerColumns;"></tr>
+
+            <ng-container [matColumnDef]="registerColumns[0]">
+                <th mat-header-cell *matHeaderCellDef> Category </th>
+                <td mat-cell *matCellDef="let transaction">
+                    @if (categories().get(transaction.category); as category) {
+                    <span class="register-rs-col-wrapper">
+                        <mat-icon class="register-rs-col">{{ category.icon }}</mat-icon>
+                        {{ category.name }}
+                    </span>
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="registerColumns[1]">
+                <th mat-header-cell *matHeaderCellDef> Method </th>
+                <td mat-cell *matCellDef="let transaction">
+                    @if (methods().get(transaction.method); as method) {
+                    <span class="register-rs-col-wrapper">
+                        <mat-icon class="register-rs-col">{{ method.icon }}</mat-icon>
+                        {{ method.name }}
+                    </span>
+                    }
+                </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="registerColumns[2]">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let transaction">
+                    {{ transaction.amount | currency:'USD':'symbol':'1.2-2' }}
+                </td>
+            </ng-container>
+
+            <ng-container [matColumnDef]="registerColumns[3]">
+                <th mat-header-cell *matHeaderCellDef [style.width]="'125px'">&nbsp;</th>
+                <td mat-cell *matCellDef="let transaction" [style.width]="'125px'">
+                    <button matIconButton (click)="setTransaction(transaction)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button matIconButton (click)="deleteTransaction(transaction.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+        </table>
+        }
+    </div>
+</div>

@@ -1,0 +1,53 @@
+.sm-dialog {
+    margin: 30px;
+}
+
+.sm-form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sm-form-row {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sm-icon-wrapper {
+    width: 56px;
+
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sm-icon {
+    width: 30px;
+    height: 30px;
+
+    font-size: 30px;
+}
+
+.sm-button-group {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.spinner-wrapper {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
