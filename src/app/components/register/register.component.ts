@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CalendarMonthViewDay } from 'angular-calendar';
 
 import { UtilService } from '@core/services/util/util.service';
-import { ITransaction } from '@core/services/report/report.service.model';
+import { ITransaction } from '@core/services/transaction/transaction.model';
 
 import { RegisterStore } from './register.store';
 import { RegisterColumns } from './register.model';

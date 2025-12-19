@@ -1,18 +1,22 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { DateTime } from "luxon";
-import { catchError, EMPTY } from "rxjs";
+import { catchError, EMPTY, tap } from "rxjs";
 
 import { NotificationService } from "@core/services/notification/notification.service";
 import { CategoryService } from "@core/services/category/category.service";
 import { MethodService } from "@core/services/method/method.service";
+import { ReportService } from "@core/services/report/report.service";
 import { UtilService } from "@core/services/util/util.service";
-import { ITransaction } from "@core/services/report/report.service.model";
+import { ITransaction } from "@core/services/transaction/transaction.model";
+import { TransactionService } from "@core/services/transaction/transaction.service";
 
 @Injectable()
 export class RegisterStore {
     private notificationService = inject(NotificationService);
+    private transactionService = inject(TransactionService);
     private categoryService = inject(CategoryService);
     private methodService = inject(MethodService);
+    private reportService = inject(ReportService);
     private util = inject(UtilService);
 
     public categories = this.categoryService.categoriesMap;
@@ -60,9 +64,8 @@ export class RegisterStore {
         this.isLoading.set(true);
 
         const range = this.util.getMonthlyRange(DateTime.fromJSDate(this.viewDate()));
-        const query = new URLSearchParams({ start: range.start!, end: range.end! }).toString();
 
-        this.httpService.get<ITransaction[]>(API_URL.TRANSACTION, query)
+        this.transactionService.get(range.start!, range.end!)
             .pipe(
                 catchError(() => {
                     this.notificationService.show('Get Records Failed');
@@ -76,8 +79,14 @@ export class RegisterStore {
     }
 
     public deleteTransaction(id: number): void {
-        this.httpService.delete(API_URL.TRANSACTION, id).subscribe(() => {
-            this.getRecord();
-        });
+        this.transactionService.delete(id)
+            .pipe(tap(() => {
+                this.reportService.refresh(
+                    this.record().find(transaction => transaction.id === id)?.date!
+                );
+            }))
+            .subscribe(() => {
+                this.getRecord();
+            });
     }
 }

@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, of } from "rxjs";
+import { key } from "./login.model";
 
 @Injectable()
 export class LoginStore {
@@ -12,21 +12,16 @@ export class LoginStore {
     public login(credential: { username: string; password: string }): void {
         this.isLoading.set(true);
 
-        this.encryptData$(credential.password).subscribe({
-            next: () => {
-                this.errorMessage.set('');
-                this.isLoading.set(false);
+        if (credential.username === key.username &&
+            credential.password === key.password
+        ) {
+            this.errorMessage.set('');
+            this.isLoading.set(false);
 
-                this.router.navigate(['/platform/register']);
-            },
-            error: () => {
-                this.errorMessage.set('Access Denied');
-                this.isLoading.set(false);
-            }
-        });
-    }
-
-    private encryptData$(data: string): Observable<string> {
-        return of();
+            this.router.navigate(['/platform/register']);
+        } else {
+            this.errorMessage.set('Access Denied');
+            this.isLoading.set(false);
+        }
     }
 }

@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from "@angular/core";
 import { catchError, EMPTY, Observable, of, switchMap, tap } from "rxjs";
 
 import { NotificationService } from "../notification/notification.service";
-import { IMethod } from "./method.service.model";
+import { IMethod, methods } from "./method.service.model";
 
 @Injectable({
     providedIn: 'root',
@@ -26,9 +26,9 @@ export class MethodService {
     }
 
     public get(): Observable<IMethod[]> {
-        return this.httpService.get<IMethod[]>(API_URL.METHOD).pipe(
-            tap(methods => {
-                this.methods.set(methods);
+        return of(methods).pipe(
+            tap(m => {
+                this.methods.set(m);
             }),
             catchError(() => {
                 this.notificationService.show('Get Methods Failed');
@@ -39,32 +39,30 @@ export class MethodService {
     }
 
     public set(method: IMethod): Observable<IMethod[]> {
-        const obs$ = method.id
-            ? this.httpService.put(API_URL.METHOD, method)
-            : this.httpService.post(API_URL.METHOD, method);
+        if (method.id != null) {
+            const idx = methods.findIndex(m => m.id === method.id);
 
-        return obs$.pipe(
-            catchError(() => {
-                this.notificationService.show('Set Method Failed');
+            if (idx !== -1) {
+                methods[idx] = { ...method };
+            }
+        } else {
+            method.id = methods.length ? Math.max(...methods.map(m => m.id!)) + 1 : 0;
 
-                return EMPTY;
-            }),
-            switchMap(id => {
-                return this.get();
-            })
-        );
+            methods.push(method);
+        }
+
+        this.methods.set([...methods]);
+
+        return of(this.methods());
     }
 
     public delete(id: number): Observable<IMethod[]> {
-        return this.httpService.delete(API_URL.METHOD, id).pipe(
-            catchError(() => {
-                this.notificationService.show('Delete Method Failed');
+        const idx = methods.findIndex(m => m.id === id);
 
-                return EMPTY;
-            }),
-            switchMap(id => {
-                return this.get();
-            })
-        );
+        if (idx !== -1) methods.splice(idx, 1);
+
+        this.methods.set([...methods]);
+
+        return of(this.methods());
     }
 }

@@ -3,3 +3,5 @@ export interface IMethod {
     icon: string | null;
     name: string;
 }
+
+export const methods: IMethod[] = [];

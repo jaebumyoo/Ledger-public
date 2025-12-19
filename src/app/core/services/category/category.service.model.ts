@@ -4,3 +4,5 @@ export interface ICategory {
     name: string;
     type: boolean;
 }
+
+export const categories: ICategory[] = [];

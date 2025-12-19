@@ -1,8 +1,8 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-import { catchError, EMPTY, Observable, switchMap, tap } from "rxjs";
+import { catchError, EMPTY, Observable, of, switchMap, tap } from "rxjs";
 
 import { NotificationService } from "../notification/notification.service";
-import { ICategory } from "./category.service.model";
+import { categories, ICategory } from "./category.service.model";
 
 @Injectable({
     providedIn: 'root',
@@ -26,9 +26,9 @@ export class CategoryService {
     }
 
     public get(): Observable<ICategory[]> {
-        return this.httpService.get<ICategory[]>(API_URL.CATEGORY).pipe(
-            tap(categories => {
-                this.categories.set(categories);
+        return of(categories).pipe(
+            tap(c => {
+                this.categories.set(c);
             }),
             catchError(() => {
                 this.notificationService.show('Get Categories Failed');
@@ -39,32 +39,30 @@ export class CategoryService {
     }
 
     public set(category: ICategory): Observable<ICategory[]> {
-        const obs$ = category.id
-            ? this.httpService.put(API_URL.CATEGORY, category)
-            : this.httpService.post(API_URL.CATEGORY, category);
+        if (category.id != null) {
+            const idx = categories.findIndex(c => c.id === category.id);
 
-        return obs$.pipe(
-            catchError(() => {
-                this.notificationService.show('Set Category Failed');
+            if (idx !== -1) {
+                categories[idx] = { ...category };
+            }
+        } else {
+            category.id = categories.length ? Math.max(...categories.map(c => c.id!)) + 1 : 0;
 
-                return EMPTY;
-            }),
-            switchMap(id => {
-                return this.get();
-            })
-        );
+            categories.push(category);
+        }
+
+        this.categories.set([...categories]);
+
+        return of(this.categories());
     }
 
     public delete(id: number): Observable<ICategory[]> {
-        return this.httpService.delete(API_URL.CATEGORY, id).pipe(
-            catchError(() => {
-                this.notificationService.show('Delete Category Failed');
+        const idx = categories.findIndex(c => c.id === id);
 
-                return EMPTY;
-            }),
-            switchMap(id => {
-                return this.get();
-            })
-        );
+        if (idx !== -1) categories.splice(idx, 1);
+
+        this.categories.set([...categories]);
+
+        return of(this.categories());
     }
 }
