@@ -39,11 +39,11 @@ export class SetTransactionComponent {
             nonNullable: true,
             validators: [Validators.required]
         }),
-        category: new FormControl<number>(15, {
+        category: new FormControl<number>(0, {
             nonNullable: true,
             validators: [Validators.required]
         }),
-        method: new FormControl<number>(11, {
+        method: new FormControl<number>(0, {
             nonNullable: true,
             validators: [Validators.required]
         }),

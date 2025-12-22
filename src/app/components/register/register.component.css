@@ -36,7 +36,15 @@
 }
 
 .register-cs-cell {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
     cursor: pointer;
+
+    box-sizing: border-box;
 }
 
 .register-cs-cell-date {
@@ -52,7 +60,7 @@
     justify-content: end;
 }
 
-.register-cs-cell {
+.register-cs-cell-total {
     color: rgb(26, 27, 31) !important;
     font-size: 1em !important;
 }

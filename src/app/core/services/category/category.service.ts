@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from "@angular/core";
-import { catchError, EMPTY, Observable, of, switchMap, tap } from "rxjs";
+import { catchError, EMPTY, Observable, of, tap } from "rxjs";
 
 import { NotificationService } from "../notification/notification.service";
 import { categories, ICategory } from "./category.service.model";
